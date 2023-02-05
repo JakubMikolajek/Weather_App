@@ -1,20 +1,34 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
+import {SafeAreaProvider} from "react-native-safe-area-context";
+import CitiesScreen from "./src/screens/CitiesScreen";
+import {createNativeStackNavigator} from "@react-navigation/native-stack";
+import {NavigationContainer} from "@react-navigation/native";
+import SingleCityScreen from "./src/screens/SingleCityScreen";
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+const queryClient = new QueryClient()
+const Stack = createNativeStackNavigator()
+const Menu = () => {
+    return (
+        <Stack.Navigator>
+            <Stack.Screen name="Home" component={CitiesScreen} options={{
+                headerShown: false
+            }}/>
+            <Stack.Screen name="Detail" component={SingleCityScreen} options={{
+                headerTransparent: true,
+                title:""
+            }}/>
+        </Stack.Navigator>
+    )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default function App() {
+    return (
+        <QueryClientProvider client={queryClient}>
+            <SafeAreaProvider>
+                <NavigationContainer>
+                    <Menu/>
+                </NavigationContainer>
+            </SafeAreaProvider>
+        </QueryClientProvider>
+    );
+}
