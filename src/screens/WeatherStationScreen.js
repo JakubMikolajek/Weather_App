@@ -10,7 +10,7 @@ export const fetchData = async () => {
     return res.json();
 };
 
-const CitiesScreen = () => {
+const WeatherStationScreen = () => {
     const {isLoading} = useQuery(['weather'], fetchData)
 
     if (isLoading) {
@@ -33,7 +33,7 @@ const CitiesScreen = () => {
     )
 }
 
-export default CitiesScreen
+export default WeatherStationScreen
 
 const styles = StyleSheet.create({
     flex_1: {

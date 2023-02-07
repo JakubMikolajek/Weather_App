@@ -1,11 +1,11 @@
-import {FlatList, StyleSheet, Text, TextInput, View} from 'react-native'
+import {FlatList, RefreshControl, StyleSheet, Text, TextInput, View} from 'react-native'
 import {useQuery} from "@tanstack/react-query";
-import {fetchData} from "../screens/CitiesScreen";
+import {fetchData} from "../screens/WeatherStationScreen";
 import SingleStation from "./SingleStation";
 import {useState} from "react";
 
 const WeatherStationList = () => {
-    const {data} = useQuery(['weather'], fetchData, {enabled: false})
+    const {data, isRefetching, refetch} = useQuery(['weather'], fetchData, {enabled: false})
     const [search, setSearch] = useState("")
 
     const searchHandler = (value) => {
@@ -29,7 +29,9 @@ const WeatherStationList = () => {
             <TextInput style={styles.input} placeholder="Wpisz miejscowość" onChangeText={searchHandler}/>
             {filteredData.length === 0 ? <Text>Nie posiadamy stacji w tym mieście</Text> :
                 <FlatList data={filteredData} renderItem={renderStation} keyExtractor={item => item.id_stacji}
-                          showsVerticalScrollIndicator={false}/>}
+                          showsVerticalScrollIndicator={false}
+                refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={refetch}/> }
+                />}
         </View>
     )
 }
